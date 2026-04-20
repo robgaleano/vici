@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+commit_source="$2"
+
+if [ -n "$CI" ]; then
+  exit 0
+fi
+
+if [ -n "$commit_source" ]; then
+  exit 0
+fi
+
+exec < /dev/tty && npx --no -- czg --hook || true
