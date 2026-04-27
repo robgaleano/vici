@@ -54,24 +54,31 @@ Semana 1 - TypeScript Avanzado: Usa esta tarea para crear tus primeros tipos glo
 
 - **Prioridad:** P0 - Crítica
 - **Etiqueta:** Mobile
-- **Estado:** Sin empezar
+- **Estado:** En progreso (pendiente: test en dispositivo)
 
 #### Pasos
 
-- [ ] Instalar Expo Router v3
-- [ ] Crear estructura de rutas: (auth)/login, (tabs)/map, (tabs)/activity, (tabs)/profile, (tabs)/wallet
-- [ ] Configurar layouts con \_layout.tsx
-- [ ] Implementar splash screen y carga inicial
+- [x] Migrar de npm a pnpm, upgrade Expo SDK 54 → 55
+- [x] Instalar Expo Router y dependencias (react-native-screens, safe-area-context, expo-linking, expo-constants, expo-system-ui)
+- [x] Crear estructura de rutas: (auth)/login, (auth)/register, (auth)/forgot-password, (tabs)/map, (tabs)/activity, (tabs)/profile
+- [x] Configurar layouts con \_layout.tsx (Root Stack, Tabs, Auth Stack)
+- [x] Configurar path alias @/\* en tsconfig.json
+- [x] Eliminar entry points legacy (App.tsx, index.ts), renombrar src/ → lib/
+- [ ] Verificar en dispositivo/simulador
+
+#### Documentación de trabajo
+
+- [Bitácora task 1.2](01-setup-arquitectura/1.2-configurar-navegacion-expo-router.md)
 
 #### Aprendizaje Senior 🎓
 
-Semana 8 - React Native: Expo Router utiliza la nueva arquitectura de React Native (Fabric). Investiga cómo el JSI reemplaza al Bridge antiguo y qué ventajas tiene para la app de mapas en tiempo real.
+Semana 8 - React Native: Expo Router v4 corre sobre la nueva arquitectura de React Native (Fabric + TurboModules) y React Navigation 7. Investiga cómo JSI reemplaza al Bridge legacy y qué ventajas tiene para la app de mapas en tiempo real.
 
 ---
 
 #### 📚 Extras — From Zero To Hero
 
-- React Native - Nueva Arquitectura (Fabric + TurboModules): Expo Router v3 corre sobre la nueva arquitectura. Entiende la diferencia entre el Bridge antiguo (async, serialización JSON) y JSI (síncrono, acceso directo a memoria nativa).
+- React Native - Nueva Arquitectura (Fabric + TurboModules): Expo Router v4 corre sobre la nueva arquitectura con React Navigation 7. Entiende la diferencia entre el Bridge legacy (async, serialización JSON) y JSI (síncrono, acceso directo a memoria nativa). En Expo 54+ la nueva arquitectura es el default.
 - Patrones de Renderizado: El file-based routing de Expo Router es el mismo concepto que Next.js. Conecta cómo el layout anidado funciona igual en ambos ecosistemas.
 - TypeScript: Tipar correctamente los params de cada ruta con useLocalSearchParams<{ id: string }>() para evitar errores de navegación en runtime.
 

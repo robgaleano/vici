@@ -5,7 +5,7 @@ status=$?
 
 if [ "$status" -ne 0 ]; then
 	echo ""
-	echo "Sugerencia: usa 'git commit' sin '-m' o 'npm run commit' para abrir el flujo interactivo de czg."
+	echo "Sugerencia: usa 'git commit' sin '-m' o 'pnpm commit' para abrir el flujo interactivo de czg."
 	echo "Ejemplos validos: feat(setup): ... | fix(lint): ... | chore(git): ..."
 fi
 

@@ -1,6 +1,9 @@
 node_modules
 .vscode
 .expo
+.agents
+.github
 dist
 coverage
 package-lock.json
+pnpm-lock.yaml
