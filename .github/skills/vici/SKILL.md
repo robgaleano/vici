@@ -11,7 +11,7 @@ description: "Vici app reference — gamified running app (Strava meets Pokémon
 - Clarifying tech stack choices, data model, or MVP scope
 
 ## Procedure
-1. Read [viciAPP.md](../../../viciAPP.md) to find the relevant section
+1. Read [docs/app-reference.md](../../../docs/app-reference.md) to find the relevant section
 2. Answer the user's question based on the documented plan
 3. If the answer requires codebase context, explore the codebase as well
-4. If the question falls outside the scope of viciAPP.md, ask the user for clarification
+4. If the question falls outside the scope of `docs/app-reference.md`, ask the user for clarification

@@ -1,9 +1,9 @@
-# Vici — App Context
+# Vici — App Reference
 
 ## Concept
 
 Gamified running app. Users run real-world routes to conquer hexagonal map zones for their team, earning virtual currency. Core loop: **run → conquer zones → earn rewards**.
-Tagline: _"Strava meets Pokémon GO"_. Comparable to Sweatcoin / WeWard in monetisation model.
+Tagline: _"Strava meets Pokemon GO"_. Comparable to Sweatcoin / WeWard in monetisation model.
 
 ## Core Mechanics
 
@@ -11,7 +11,7 @@ Tagline: _"Strava meets Pokémon GO"_. Comparable to Sweatcoin / WeWard in monet
 - Users join one of **3 teams** (Red / Blue / Yellow)
 - Running through zones accumulates points for the user's team
 - Zone ownership changes when a team's points exceed the opponent's
-- Virtual currency earned per activity → redeemable in an in-app marketplace (discounts, coupons from brand partners)
+- Virtual currency earned per activity -> redeemable in an in-app marketplace (discounts, coupons from brand partners)
 
 ## Anti-Cheat
 

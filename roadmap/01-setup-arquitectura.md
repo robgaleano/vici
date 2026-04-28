@@ -54,7 +54,7 @@ Semana 1 - TypeScript Avanzado: Usa esta tarea para crear tus primeros tipos glo
 
 - **Prioridad:** P0 - Crítica
 - **Etiqueta:** Mobile
-- **Estado:** En progreso (pendiente: test en dispositivo)
+- **Estado:** Completada
 
 #### Pasos
 
@@ -64,7 +64,7 @@ Semana 1 - TypeScript Avanzado: Usa esta tarea para crear tus primeros tipos glo
 - [x] Configurar layouts con \_layout.tsx (Root Stack, Tabs, Auth Stack)
 - [x] Configurar path alias @/\* en tsconfig.json
 - [x] Eliminar entry points legacy (App.tsx, index.ts), renombrar src/ → lib/
-- [ ] Verificar en dispositivo/simulador
+- [x] Verificar en dispositivo iPhone con Expo Go beta para SDK 55
 
 #### Documentación de trabajo
 
