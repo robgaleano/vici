@@ -96,6 +96,10 @@ Semana 8 - React Native: Expo Router v4 corre sobre la nueva arquitectura de Rea
 - [ ] Configurar Row Level Security (RLS) en todas las tablas
 - [ ] Generar y tipar el cliente Supabase con supabase gen types typescript
 
+#### Documentación de trabajo
+
+- [Bitácora task 1.3](01-setup-arquitectura/1.3-setup-supabase-esquema-inicial-bd.md)
+
 #### Aprendizaje Senior 🎓
 
 Semana 10 - Bases de Datos: Este es el momento de entender las diferencias entre SQL vs NoSQL. ¿Por qué PostGIS sobre MongoDB para datos geoespaciales? Investiga índices espaciales (GiST) y cómo aceleran las queries de 'dame todas las zonas en radio X km'.

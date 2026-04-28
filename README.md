@@ -1,4 +1,4 @@
-# vici
+# VICI
 
 App de running gamificada para conquistar territorio real. El loop base es: correr, conquistar zonas, ganar recompensas.
 
