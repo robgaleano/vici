@@ -1,19 +1,17 @@
 {
-  "name": "vici",
+  "name": "vici-monorepo",
   "version": "1.0.0",
   "description": "Running to conquer a new territory",
-  "main": "expo-router/entry",
+  "private": true,
   "engines": {
     "node": ">=24.11.1 <25"
   },
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "lint": "eslint .",
-    "lint:fix": "npm run lint -- --fix",
-    "typecheck": "tsc --noEmit",
+    "mobile": "pnpm --filter @vici/mobile start",
+    "mobile:ios": "pnpm --filter @vici/mobile ios",
+    "mobile:android": "pnpm --filter @vici/mobile android",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "commit": "czg",
@@ -21,30 +19,14 @@
     "commit:retry": "czg --retry",
     "prepare": "husky"
   },
-  "dependencies": {
-    "expo": "^55.0.0",
-    "expo-constants": "~55.0.15",
-    "expo-linking": "~55.0.14",
-    "expo-router": "~55.0.13",
-    "expo-status-bar": "~55.0.5",
-    "expo-system-ui": "~55.0.16",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "react-native": "0.83.6",
-    "react-native-safe-area-context": "~5.6.2",
-    "react-native-screens": "~4.23.0"
-  },
   "devDependencies": {
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
-    "@types/react": "~19.2.10",
     "czg": "^1.12.0",
-    "eslint": "^9.39.4",
-    "eslint-config-expo": "~55.0.0",
-    "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.3",
+    "turbo": "^2.5.4",
     "typescript": "~5.9.2"
   },
   "lint-staged": {
@@ -56,6 +38,5 @@
       "prettier --write"
     ]
   },
-  "private": true,
   "packageManager": "pnpm@10.33.2+sha512.a90faf6feeab71ad6c6e57f94e0fe1a12f5dcc22cd754db40ae9593eb6a3e0b6b12e3540218bb37ae083404b1f2ce6db2a4121e979829b4aff94b99f49da1cf8"
 }
