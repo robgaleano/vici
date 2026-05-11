@@ -1,50 +1,51 @@
 # VICI
 
-App de running gamificada para conquistar territorio real. El loop base es: correr, conquistar zonas, ganar recompensas.
+Gamified running app for conquering real-world territory. The core loop is: run, conquer zones, earn rewards.
 
-## Mapa de documentacion
+## Documentation Map
 
-- `README.md`: entrada rapida para levantar el proyecto, conocer el stack y ubicar la documentacion importante.
-- [`docs/app-reference.md`](./docs/app-reference.md): spec viva de producto y arquitectura (concepto, mecanicas, stack, modelo de datos, monetizacion, alcance MVP).
-- [`roadmap.md`](./roadmap.md): vista general de epicas y prioridades.
-- [`roadmap/`](./roadmap/): bitacoras de ejecucion por task.
+`README.md`: quick entry point for getting the project running, understanding the stack, and locating the important docs.
+[`docs/app-reference.md`](./docs/app-reference.md): living product and architecture spec (concept, mechanics, stack, data model, monetization, MVP scope).
+[`roadmap.md`](./roadmap.md): high-level view of epics and priorities.
+[`roadmap/`](./roadmap/): execution logs for each task.
 
-## Stack actual
+## Current Stack
 
 - Expo SDK 55
-- Expo Router con file-based routing
+  Expo Router with file-based routing
 - React Native 0.83.6
 - React 19.2.0
-- TypeScript 5.9 en modo strict
+  TypeScript 5.9 in strict mode
 - pnpm 10.33.2
 - ESLint 9 + Prettier + Husky + commitlint + czg
 
-## Estructura del repo
+## Repo Structure
 
-- `app/`: rutas y layouts de Expo Router
-- `lib/`: codigo compartido reutilizable (`types/`, `utils/`)
-- `docs/`: referencia viva del producto y arquitectura
-- `roadmap/`: epicas y bitacoras de ejecucion
+`apps/mobile/`: Expo app with Expo Router routes, layouts, and mobile-specific code
+`packages/shared/`: shared TypeScript utilities and types across the monorepo
+`packages/supabase/`: Supabase package for schema, migrations, and generated types
+`docs/`: living product and architecture reference
+`roadmap/`: epics and task execution logs
 
-## Puesta en marcha
+## Getting Started
 
 1. `nvm use`
-2. `corepack enable` si `pnpm` no esta disponible en tu maquina
+2. `corepack enable` if `pnpm` is not available on your machine
 3. `pnpm install`
-4. `pnpm start`
+4. `pnpm mobile`
 
-Atajos utiles:
+Useful shortcuts:
 
-- `pnpm ios`
-- `pnpm android`
-- `pnpm web`
+`pnpm mobile:ios`
+`pnpm mobile:android`
+`pnpm --filter @vici/mobile web`
 
-## Nota iOS / Expo Go
+## iOS / Expo Go Note
 
-- La validacion real de este proyecto con SDK 55 se hizo usando Expo Go beta en iPhone.
-- Durante la validacion, la version de Expo Go publicada en App Store seguia soportando SDK 54, asi que podia mostrar error de incompatibilidad aunque el proyecto estuviera correcto.
+Real validation for this project on SDK 55 was done with Expo Go beta on iPhone.
+During validation, the Expo Go version published on the App Store still targeted SDK 54, so it could show an incompatibility error even when the project was correctly configured.
 
-## Calidad
+## Quality
 
 - `pnpm run lint`
 - `pnpm run typecheck`
@@ -52,20 +53,20 @@ Atajos utiles:
 
 ## Commits
 
-- `pnpm commit` abre el flujo interactivo de `czg`.
-- `pnpm commit:retry` reintenta el ultimo flujo interactivo tras arreglar fallos de hooks.
-- `pnpm commit:help` muestra las opciones del CLI.
-- `git commit -m "..."` sigue pasando por `commitlint` y por los hooks de Husky, pero no abre `czg`.
-- Formato esperado: `type(scope): descripcion-corta`.
-- El `scope` es opcional: `type: descripcion-corta`.
-- Tipos permitidos: `build`, `chore`, `ci`, `docs`, `feat`, `fix`, `perf`, `refactor`, `revert`, `style`, `test`.
+`pnpm commit` opens the interactive `czg` flow.
+`pnpm commit:retry` retries the previous interactive flow after fixing hook failures.
+`pnpm commit:help` shows the CLI options.
+`git commit -m "..."` still goes through `commitlint` and Husky hooks, but it does not open `czg`.
+Expected format: `type(scope): short-description`.
+The `scope` is optional: `type: short-description`.
+Allowed types: `build`, `chore`, `ci`, `docs`, `feat`, `fix`, `perf`, `refactor`, `revert`, `style`, `test`.
 
 ## Roadmap
 
-- [Roadmap principal](./roadmap.md)
-- [Task 1.1 · Inicializar proyecto Expo con TypeScript strict](./roadmap/01-setup-arquitectura/1.1-inicializar-proyecto-expo-typescript-strict.md)
-- [Task 1.2 · Configurar navegacion con Expo Router](./roadmap/01-setup-arquitectura/1.2-configurar-navegacion-expo-router.md)
+[Main roadmap](./roadmap.md)
+[Task 1.1 · Initialize Expo project with strict TypeScript](./roadmap/01-setup-architecture/1.1-initialize-expo-project-with-strict-typescript.md)
+[Task 1.2 · Configure navigation with Expo Router](./roadmap/01-setup-architecture/1.2-configure-navigation-with-expo-router.md)
 
-## Referencia funcional
+## Functional Reference
 
 - [App reference](./docs/app-reference.md)

@@ -1,25 +1,25 @@
-# 🏃 Vici APP — MVP Roadmap
+# 🏃 Vici App — MVP Roadmap
 
-Este roadmap se ha separado por épicas para hacerlo más manejable durante la ejecución del proyecto.
+This roadmap is split into epics to make execution more manageable during delivery.
 
-## Índice por Epic
+## Epic Index
 
-- [01 · Setup & Arquitectura](roadmap/01-setup-arquitectura.md)
-- [02 · Auth & Seguridad](roadmap/02-auth-seguridad.md)
-- [03 · Mapas & Geolocalización](roadmap/03-mapas-geolocalizacion.md)
-- [04 · Motor de Juego & Running](roadmap/04-motor-juego-running.md)
-- [05 · Economía & Wallet](roadmap/05-economia-wallet.md)
-- [06 · Social & Notificaciones](roadmap/06-social-notificaciones.md)
-- [07 · Deploy & Observabilidad](roadmap/07-deploy-observabilidad.md)
+- [01 · Setup & Architecture](roadmap/01-setup-architecture.md)
+- [02 · Auth & Security](roadmap/02-auth-security.md)
+- [03 · Maps & Geolocation](roadmap/03-maps-geolocation.md)
+- [04 · Gameplay & Running](roadmap/04-gameplay-running.md)
+- [05 · Economy & Wallet](roadmap/05-economy-wallet.md)
+- [06 · Social & Notifications](roadmap/06-social-notifications.md)
+- [07 · Deploy & Observability](roadmap/07-deploy-observability.md)
 - [08 · Testing & QA](roadmap/08-testing-qa.md)
 
-## Prioridades
+## Priorities
 
-- `P0`: [01](roadmap/01-setup-arquitectura.md), [02](roadmap/02-auth-seguridad.md), [03](roadmap/03-mapas-geolocalizacion.md), [04](roadmap/04-motor-juego-running.md)
-- `P1`: [05](roadmap/05-economia-wallet.md), [06](roadmap/06-social-notificaciones.md), [07](roadmap/07-deploy-observabilidad.md), [08](roadmap/08-testing-qa.md)
+- `P0`: [01](roadmap/01-setup-architecture.md), [02](roadmap/02-auth-security.md), [03](roadmap/03-maps-geolocation.md), [04](roadmap/04-gameplay-running.md)
+- `P1`: [05](roadmap/05-economy-wallet.md), [06](roadmap/06-social-notifications.md), [07](roadmap/07-deploy-observability.md), [08](roadmap/08-testing-qa.md)
 
-## Sugerencia de uso
+## Suggested Usage
 
-- Trabajar cada `EPIC` como unidad de planificación.
-- Convertir cada task en issue o checklist operativa cuando empiece la implementación.
-- Mantener este archivo como índice y navegación principal.
+- Treat each `EPIC` as a planning unit.
+- Turn each task into an issue or working checklist when implementation begins.
+- Keep this file as the main index and navigation entry point.
