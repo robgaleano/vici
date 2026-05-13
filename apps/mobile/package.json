@@ -12,7 +12,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.105.4",
     "@vici/shared": "workspace:*",
+    "@vici/supabase": "workspace:*",
     "expo": "^55.0.0",
     "expo-constants": "~55.0.15",
     "expo-linking": "~55.0.14",
