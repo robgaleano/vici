@@ -86,15 +86,25 @@ Week 8 - React Native: Expo Router v4 runs on top of the new React Native archit
 
 - **Priority:** P0 - Critical
 - **Label:** Backend
-- **Status:** Not started
+- **Status:** Completed
 
 #### Steps
 
-- [ ] Create the Supabase project
-- [ ] Enable the `postgis` and `h3` extensions in the SQL Editor
-- [ ] Design and run the initial migrations
-- [ ] Configure Row Level Security (RLS) on every table
-- [ ] Generate and type the Supabase client with `supabase gen types typescript`
+- [x] Create the Supabase project (EU West region, free tier)
+- [x] Enable `postgis` extension via migration (`h3-pg` is Pro-only; H3 calculations handled in JS layer using `h3-js`)
+- [x] Write 8 migrations in dependency order: extensions → teams → profiles → zones → zone_scores → activities → transactions → views
+- [x] Auto-create `profiles` row on sign-up via `handle_new_user` trigger on `auth.users`
+- [x] Configure RLS on all 6 tables per the agreed policy matrix
+- [x] Generate typed client with `supabase gen types typescript` → `packages/supabase/supabase/types/database.types.ts`
+- [x] Wire typed `supabase` client into `apps/mobile/lib/supabase/client.ts`
+- [x] Add `@vici/supabase` as workspace dependency of `@vici/mobile`
+- [x] Seed 3 launch teams (Speed / Endurance / Tactics) in `packages/supabase/supabase/seed.sql`
+
+#### Deferred to Later Tasks
+
+- Community of Madrid pre-seed (~18,000 H3 resolution-9 hexagons) — requires an Edge Function or one-off script; deferred to Epic 03 (Maps & Geolocation)
+- Auth providers setup (Apple Sign-In, Google OAuth, email/password) — covered in Epic 02 (Auth & Security)
+- End-to-end flow verification (sign-up → onboarding → activity → wallet) — covered in Epic 02 after auth is wired up
 
 #### Work Log
 
@@ -108,16 +118,18 @@ Week 10 - Databases: This is the right moment to understand SQL vs NoSQL. Why us
 
 #### 📚 Extras — From Zero to Hero
 
-- SQL vs NoSQL: Document why you chose PostgreSQL + PostGIS over MongoDB. What does PostGIS offer for geospatial data that MongoDB Atlas Search cannot fully match?
-- RESTful vs GraphQL: Supabase exposes an auto-generated REST API. Evaluate whether Supabase GraphQL could be worth it at some point, especially to reduce over-fetching for zones with many fields.
-- Node.js Architecture: Structure the backend inside Supabase Edge Functions with clean architecture principles, separating business logic from the data layer.
-- TypeScript - Generics: The `supabase gen types typescript` command generates types automatically. Study how those generated types integrate with your `ApiResponse<T>` pattern.
+- SQL vs NoSQL: PostgreSQL + PostGIS was chosen over MongoDB because PostGIS supports native `geometry` types, `GiST` spatial indexes, and operations like `ST_Intersects` that make zone/route intersection queries fast and declarative. MongoDB Atlas Search can do geospatial queries but lacks the richness of PostGIS for polygon operations.
+- RESTful vs GraphQL: Supabase exposes an auto-generated REST API via PostgREST. Evaluate whether Supabase GraphQL could reduce over-fetching for zones with many fields — especially the `zones_with_scores` view that joins multiple tables.
+- Node.js Architecture: Structure the backend inside Supabase Edge Functions with clean architecture principles, separating business logic from the data layer. The `finish-activity` Edge Function will be the first real example of this.
+- TypeScript - Generics: The generated `Database` type from `supabase gen types typescript` integrates directly with `ApiResponse<T>`. Study how `Database["public"]["Tables"]["profiles"]["Row"]` composes with your shared utility types.
 
 #### [1.4] Task: Configure Zustand for global state
 
 - **Priority:** P1 - High
 - **Label:** Frontend
 - **Status:** Not started
+
+> ⚠️ Prerequisite: Epic 02 (Auth & Security) should be started before or alongside this task. `useAuthStore` depends on the Supabase auth session being available, and the onboarding flow (username + team selection) must work end-to-end before the game stores are meaningful.
 
 #### Steps
 
