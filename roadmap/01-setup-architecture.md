@@ -119,9 +119,9 @@ Week 8 - React Native: Expo Router v4 runs on top of the new React Native archit
 
 #### Deferred to Later Tasks
 
-- Community of Madrid pre-seed (~18,000 H3 resolution-9 hexagons) — requires an Edge Function or one-off script; deferred to Epic 03 (Maps & Geolocation)
-- Auth providers setup (Apple Sign-In, Google OAuth, email/password) — covered in Epic 02 (Auth & Security)
-- End-to-end flow verification (sign-up → onboarding → activity → wallet) — covered in Epic 02 after auth is wired up
+- Community of Madrid pre-seed (~18,000 H3 resolution-9 hexagons) — requires an Edge Function or one-off script; deferred to [Epic 03 · Maps & Geolocation](../03-maps-geolocation.md)
+- Auth providers setup (Apple Sign-In, Google OAuth, email/password) — covered in [Epic 02 · Auth & Security](../02-auth-security.md)
+- End-to-end flow verification (sign-up → onboarding → activity → wallet) — covered in [Epic 02 · Auth & Security](../02-auth-security.md) after auth is wired up
 
 #### Work Log
 
