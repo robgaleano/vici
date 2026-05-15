@@ -1,0 +1,27 @@
+name: Branch naming convention
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+
+jobs:
+  check-branch-name:
+    name: Check branch name
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate branch name
+        run: |
+          BRANCH="${{ github.head_ref }}"
+          PATTERN='^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)/[a-z0-9][a-z0-9-]*$'
+
+          echo "Branch: $BRANCH"
+
+          if echo "$BRANCH" | grep -qE "$PATTERN"; then
+            echo "✓ Branch name is valid."
+          else
+            echo "✗ Branch name '$BRANCH' does not follow the naming convention."
+            echo "  Expected: type/short-description  (e.g. feat/auth-apple-sign-in)"
+            echo "  Allowed types: build | chore | ci | docs | feat | fix | perf | refactor | revert | style | test"
+            exit 1
+          fi

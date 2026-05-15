@@ -14,7 +14,7 @@ Set up the VICI project architecture from scratch in a professional way, with th
 
 #### Definition of Done
 
-- [ ] GitHub repo with a defined branch strategy (`main` / `develop` / `feature/*`)
+- [x] GitHub repo with a defined branch strategy (trunk-based: all branches → `main` via PR)
 - [ ] App runs in iOS Simulator and Android Emulator
 - [ ] TypeScript in strict mode with no errors
 - [ ] Basic CI pipeline running on every PR

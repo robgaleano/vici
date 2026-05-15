@@ -51,6 +51,28 @@ During validation, the Expo Go version published on the App Store still targeted
 - `pnpm run typecheck`
 - `pnpm run format:check`
 
+## Branching
+
+All work happens on short-lived branches that merge into `main` via a pull request (trunk-based).
+Direct pushes to `main` are blocked.
+
+Branch naming follows the same type vocabulary as conventional commits:
+
+```
+feat/auth-apple-sign-in
+fix/map-zone-render-crash
+chore/upgrade-expo-56
+docs/roadmap-cicd
+refactor/supabase-client-types
+```
+
+Pattern: `type/short-description` — lowercase, kebab-case, no ticket prefix.
+Allowed types: `build`, `chore`, `ci`, `docs`, `feat`, `fix`, `perf`, `refactor`, `revert`, `style`, `test`.
+
+The naming convention is enforced locally by a Husky `pre-push` hook and on every PR by a GitHub Actions workflow (`branch-name.yml`).
+
+Every PR requires **1 approval** before it can be merged (squash). Stale reviews are dismissed on new commits.
+
 ## Commits
 
 `pnpm commit` opens the interactive `czg` flow.

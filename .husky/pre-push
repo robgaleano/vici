@@ -1,0 +1,18 @@
+branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+
+# Allow main directly (local tooling may push main in exceptional cases)
+if [ "$branch" = "main" ]; then
+  echo "pre-push: pushing to main directly is restricted — open a PR instead."
+  exit 1
+fi
+
+pattern='^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)/[a-z0-9][a-z0-9-]*$'
+
+if ! echo "$branch" | grep -qE "$pattern"; then
+  echo ""
+  echo "pre-push: branch name '$branch' does not follow the naming convention."
+  echo "Expected format: type/short-description (e.g. feat/auth-apple-sign-in)"
+  echo "Allowed types:   build | chore | ci | docs | feat | fix | perf | refactor | revert | style | test"
+  echo ""
+  exit 1
+fi
