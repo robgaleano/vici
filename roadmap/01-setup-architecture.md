@@ -45,10 +45,10 @@ Week 1 - Advanced TypeScript: Use this task to create your first global types wi
 
 #### 📚 Extras — From Zero to Hero
 
-- Event Loop & Garbage Collection: Understand why strict TypeScript helps prevent dangling references. What happens in the Event Loop when GPS emits coordinates every 3 seconds while the UI keeps re-rendering?
-- Utility Types: Create `src/types/api.ts` from day one with `ApiResponse<T>`, `PaginatedResult<T>`, and `Nullable<T>`. Use them in every project service.
-- Generics: Define `type ApiResponse<T> = { data: T; error: string | null }` and use it in every Supabase call.
-- Type Guards: Implement `isUser(obj): obj is User` to validate server responses before using them.
+- Event Loop & Garbage Collection: When GPS emits coordinates every 3 seconds and the UI re-renders simultaneously, both are tasks on the JS thread's event loop. Strict TypeScript helps here because it prevents type errors like passing a raw coordinate object where a typed `{ latitude: number; longitude: number }` is expected — errors that would only surface at runtime during a live run. With `strict: true`, the compiler catches these at build time.
+- Utility Types: `ApiResponse<T>`, `PaginatedResult<T>`, and `Nullable<T>` were created in `packages/shared/src/index.ts` and are available across the monorepo via the `@vici/shared` workspace alias. Every Supabase call in the app should return an `ApiResponse<T>` so error handling is uniform.
+- Generics: `type ApiResponse<T> = { data: T; error: string | null }` is defined in `packages/shared`. When used with the Supabase client (e.g. `supabase.from('profiles').select()`), `T` becomes `Database["public"]["Tables"]["profiles"]["Row"]` — a fully typed row from the generated schema.
+- Type Guards: `isUser(obj): obj is User` validates that a server response has the expected shape before the app uses it. In VICI this is critical on the onboarding gate: the app must confirm `profile.username !== null && profile.team_id !== null` before allowing entry to the main tabs.
 
 #### [1.2] Task: Configure navigation with Expo Router
 
@@ -78,9 +78,9 @@ Week 8 - React Native: Expo Router v4 runs on top of the new React Native archit
 
 #### 📚 Extras — From Zero to Hero
 
-- React Native - New Architecture (Fabric + TurboModules): Expo Router v4 runs on the new architecture with React Navigation 7. Understand the difference between the legacy Bridge (async, JSON serialization) and JSI (synchronous, direct native memory access). In Expo 54+, the new architecture is the default.
-- Rendering Patterns: Expo Router's file-based routing follows the same core idea as Next.js. Connect how nested layouts work across both ecosystems.
-- TypeScript: Properly type route params with `useLocalSearchParams<{ id: string }>()` to avoid runtime navigation errors.
+- React Native - New Architecture (Fabric + TurboModules): Expo Router v4 runs on the new architecture by default from Expo 54+. The legacy Bridge serialized every JS↔native call to JSON and sent it asynchronously across a bridge — fine for button taps, but a bottleneck for a real-time map app emitting GPS coordinates every 3 seconds. JSI replaces this with direct synchronous memory access between JS and native, meaning Mapbox can receive coordinate updates without the serialization cost.
+- Rendering Patterns: Expo Router's file-based routing is the same mental model as Next.js App Router. A `_layout.tsx` file is equivalent to a `layout.tsx` in Next.js — it wraps all children in that directory. Nested layouts (Root Stack → Auth Stack → Tabs) map directly to nested `layout.tsx` files. The key difference: Expo Router navigates between native screens, not HTML pages.
+- TypeScript: Route params are typed with `useLocalSearchParams<{ id: string }>()`. Without this, params come in as `string | string[]` and require runtime checks everywhere. In VICI this matters for future deep links into zone detail screens or challenge screens where the wrong param type would silently break navigation.
 
 #### [1.3] Task: Supabase setup + initial database schema
 
