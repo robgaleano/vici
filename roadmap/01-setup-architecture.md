@@ -144,17 +144,24 @@ Week 10 - Databases: This is the right moment to understand SQL vs NoSQL. Why us
 
 - **Priority:** P1 - High
 - **Label:** Frontend
-- **Status:** Not started
+- **Status:** Ready for execution (design complete)
 
 > ⚠️ Prerequisite: Epic 02 (Auth & Security) should be started before or alongside this task. `useAuthStore` depends on the Supabase auth session being available, and the onboarding flow (username + team selection) must work end-to-end before the game stores are meaningful.
 
 #### Steps
 
 - [ ] Install `zustand` and `immer`
-- [ ] Create `useAuthStore`: `user`, `session`, `isLoading`, `login()`, `logout()`
-- [ ] Create `useGameStore`: nearby zones, current team, points
-- [ ] Create `useActivityStore`: running session state (`active`/`inactive`, coordinates, distance)
-- [ ] Implement persistence middleware for the auth token
+- [ ] Install `expo-secure-store` and wire as Supabase storage adapter
+- [ ] Create `useAuthStore`: `session`, `user`, `isLoading`, `initialize()`, `login()`, `logout()`
+- [ ] Create `useProfileStore`: typed stub (`profile: Profile | null`, `isLoading`)
+- [ ] Create `useGameStore`: typed skeleton (`nearbyZones`, `currentTeam`, `competitivePoints`)
+- [ ] Create `useActivityStore`: full in-flight accumulator with immer (`status`, `routeCoordinates`, `distanceKm`, `durationSeconds`, `gpsPointCount`)
+- [ ] Wire `initialize()` + loading gate into root `_layout.tsx`
+- [ ] All stores use `StateCreator<T>` pattern + devtools in dev builds
+
+#### Work Log
+
+- [Task design log 1.4](01-setup-architecture/1.4-configure-zustand-global-state.md)
 
 #### Senior Learning 🎓
 

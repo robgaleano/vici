@@ -8,6 +8,10 @@
 - **Label:** Backend
 - **Status:** Not started
 
+#### Prerequisite reading
+
+> Before starting this epic, read [01-setup-architecture/1.3-handoff.md](01-setup-architecture/1.3-handoff.md). Task 1.3 (Supabase schema) is complete but left three items intentionally deferred to this epic: auth provider configuration, the onboarding gate, and end-to-end flow verification. The handoff contains all decisions already made, exact prerequisites for each item, and the "pick up here" brief for the first agent that works on task 2.x.
+
 #### Objective
 
 Implement robust authentication and user data privacy.
