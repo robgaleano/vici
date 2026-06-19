@@ -32,6 +32,7 @@ Ensure MVP quality with a pragmatic testing strategy for a small team.
 - [ ] Tests for `validateActivity(activity)`: fraud cases must be rejected
 - [ ] Tests for `calculatePoints(distance, powerUp)`: verify multipliers
 - [ ] Configure a coverage report and a minimum 70% threshold for CI
+- [ ] Append a `test` job to `.github/workflows/ci.yml` (deferred here from [task 1.5 · CI/CD](01-setup-architecture/1.5-setup-cicd-github-actions.md) D3 — it slots in right after the `typecheck` step)
 
 #### Senior Learning 🎓
 

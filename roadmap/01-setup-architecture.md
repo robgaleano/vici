@@ -135,29 +135,40 @@ Week 10 - Databases: This is the right moment to understand SQL vs NoSQL. Why us
 
 #### 📚 Extras — From Zero to Hero
 
-- SQL vs NoSQL: PostgreSQL + PostGIS was chosen over MongoDB because PostGIS supports native `geometry` types, `GiST` spatial indexes, and operations like `ST_Intersects` that make zone/route intersection queries fast and declarative. MongoDB Atlas Search can do geospatial queries but lacks the richness of PostGIS for polygon operations.
-- RESTful vs GraphQL: Supabase exposes an auto-generated REST API via PostgREST. Evaluate whether Supabase GraphQL could reduce over-fetching for zones with many fields — especially the `zones_with_scores` view that joins multiple tables.
-- Node.js Architecture: Structure the backend inside Supabase Edge Functions with clean architecture principles, separating business logic from the data layer. The `finish-activity` Edge Function will be the first real example of this.
-- TypeScript - Generics: The generated `Database` type from `supabase gen types typescript` integrates directly with `ApiResponse<T>`. Study how `Database["public"]["Tables"]["profiles"]["Row"]` composes with your shared utility types.
+- SQL vs NoSQL: Why use PostGIS over MongoDB for geospatial data? Research spatial indexes (`GiST`) and how they speed up "every zone within an X km radius" queries.
+
+  > PostgreSQL + PostGIS was chosen over MongoDB because PostGIS supports native `geometry`/`geography` types, `GiST` spatial indexes, and operations like `ST_Intersects` and `ST_DWithin` that make zone/route intersection and radius queries fast and declarative. A `GiST` index stores bounding-box approximations in a balanced tree, so a "zones within X km" query prunes the search to a handful of candidates instead of scanning every row — the same reason it beats a naïve lat/lng range filter. MongoDB Atlas supports 2dsphere geospatial queries but lacks the richness of PostGIS for polygon-on-polygon operations, which VICI needs for H3-hexagon zone boundaries. The relational model also fits the data: teams, profiles, zones, and scores are strongly related entities better served by joins and foreign keys than by denormalized documents.
+
+- RESTful vs GraphQL: Supabase exposes an auto-generated REST API via PostgREST. Evaluate whether Supabase GraphQL could reduce over-fetching for zones with many fields — especially the `zones_with_scores` view.
+
+  > For VICI's launch, PostgREST is sufficient and over-fetching is already solved at the database layer: the `zones_with_scores` view collapses the `zones` + `zone_scores` join into one row per zone with an aggregated `team_scores` JSON object, so the client fetches exactly the shape the map needs in a single request — no GraphQL resolver needed. GraphQL would help if the app later needed deeply nested, client-specified selections (e.g. zone → owner team → roster → member profiles) where REST would over- or under-fetch. That's not the current access pattern, so this is **deferred** — revisit if social/team-detail screens in [Epic 06](../06-social-notifications.md) introduce nested graph traversals.
+
+- Node.js Architecture: Structure the backend inside Supabase Edge Functions with clean architecture principles, separating business logic from the data layer.
+
+  > **Deferred to [Epic 04 · Gameplay & Running](../04-gameplay-running.md).** No Edge Functions exist yet in task 1.3 — the schema, RLS, triggers, and views are pure database concerns. The `finish-activity` Edge Function will be the first real application of clean architecture here: a thin handler layer (HTTP/auth) calling a business-logic layer (anti-cheat validation, score calculation) that in turn calls a data layer (Supabase client writes), keeping each concern independently testable.
+
+- TypeScript - Generics: The generated `Database` type from `supabase gen types typescript` integrates with `ApiResponse<T>`. Study how `Database["public"]["Tables"]["profiles"]["Row"]` composes with the shared utility types.
+
+  > The typed client (`createClient<Database>`) makes every query return rows derived from the generated schema, so `Database["public"]["Tables"]["profiles"]["Row"]` is the source `T` for the shared `ApiResponse<T>`, `PaginatedResult<T>`, and `Nullable<T>` from `@vici/shared`. Composition example: a profile fetch is typed `ApiResponse<Database["public"]["Tables"]["profiles"]["Row"]>`, and a paginated zone list is `PaginatedResult<Database["public"]["Views"]["zones_with_scores"]["Row"]>` — the same view that aggregates `team_scores` server-side. Because the generic flows from the generated types, regenerating after a migration propagates schema changes through every call site at compile time, no manual interface upkeep.
 
 #### [1.4] Task: Configure Zustand for global state
 
 - **Priority:** P1 - High
 - **Label:** Frontend
-- **Status:** Ready for execution (design complete)
+- **Status:** Completed
 
 > ⚠️ Prerequisite: Epic 02 (Auth & Security) should be started before or alongside this task. `useAuthStore` depends on the Supabase auth session being available, and the onboarding flow (username + team selection) must work end-to-end before the game stores are meaningful.
 
 #### Steps
 
-- [ ] Install `zustand` and `immer`
-- [ ] Install `expo-secure-store` and wire as Supabase storage adapter
-- [ ] Create `useAuthStore`: `session`, `user`, `isLoading`, `initialize()`, `login()`, `logout()`
-- [ ] Create `useProfileStore`: typed stub (`profile: Profile | null`, `isLoading`)
-- [ ] Create `useGameStore`: typed skeleton (`nearbyZones`, `currentTeam`, `competitivePoints`)
-- [ ] Create `useActivityStore`: full in-flight accumulator with immer (`status`, `routeCoordinates`, `distanceKm`, `durationSeconds`, `gpsPointCount`)
-- [ ] Wire `initialize()` + loading gate into root `_layout.tsx`
-- [ ] All stores use `StateCreator<T>` pattern + devtools in dev builds
+- [x] Install `zustand` and `immer`
+- [x] Install `expo-secure-store` and wire as Supabase storage adapter
+- [x] Create `useAuthStore`: `session`, `user`, `isLoading`, `initialize()`, `login()`, `logout()`
+- [x] Create `useProfileStore`: typed stub (`profile: Profile | null`, `isLoading`)
+- [x] Create `useGameStore`: typed skeleton (`nearbyZones`, `currentTeam`, `competitivePoints`)
+- [x] Create `useActivityStore`: full in-flight accumulator with immer (`status`, `routeCoordinates`, `distanceKm`, `durationSeconds`, `gpsPointCount`)
+- [x] Wire `initialize()` + loading gate into root `_layout.tsx`
+- [x] All stores use `StateCreator<T>` pattern + devtools in dev builds
 
 #### Work Log
 
@@ -172,22 +183,44 @@ Week 1 - TypeScript: Properly typing Zustand stores requires a solid grasp of `i
 #### 📚 Extras — From Zero to Hero
 
 - Architecture and State Management (Week 3): Apply the Context API vs Zustand vs Redux Toolkit analysis here. Why is Zustand the right fit for VICI instead of Redux? Document the trade-offs: boilerplate, DevTools, and middleware.
+
+  > Context API was ruled out because it re-renders every consumer on any value change — fatal for `useActivityStore`, which mutates on every GPS tick and would re-render the whole tree ~every 3 seconds. Redux Toolkit solves that with selectors but carries boilerplate (slices, reducers, dispatch, providers) that doesn't pay off at VICI's scale. Zustand wins on three axes: **boilerplate** — a store is one `create()` call with no provider wrapping the app; **DevTools** — the `devtools` middleware gives Redux DevTools action history for free (D9); **middleware** — `immer` for mutable GPS updates (D7) and selector-based subscriptions so a component reading `distanceKm` doesn't re-render when `routeCoordinates` grows. The trade-off accepted: Zustand has a smaller ecosystem and no enforced action conventions, so discipline (the `StateCreator` + slice pattern, D8) is self-imposed rather than framework-enforced.
+
 - Flux Pattern and unidirectional data flow: Zustand follows this pattern. The store is the single source of truth, actions mutate state, and components react to it. Identify that pattern as you implement it.
+
+  > The pattern is visible in `useActivityStore`: the store holds the single source of truth (`status`, `routeCoordinates`), actions (`addCoordinate`, `endSession`) are the only way to mutate it via `set()`, and components subscribe and re-render in response. Data flows one way — action → `set()` → new state → component — never the reverse. A component never mutates `routeCoordinates` directly; it calls `addCoordinate()`. This is the same unidirectional cycle as Redux/Flux, minus the dispatcher/reducer ceremony.
+
 - TypeScript - Generics: Use `StateCreator<AuthState>` to type your slices correctly. Practice `interface` vs `type` in each store definition.
-- Event Loop: Zustand persistence middleware serializes to AsyncStorage asynchronously. Understand why that does not block the JS thread.
+
+  > Every store is defined with the `StateCreator<T>` generic rather than the inline `create<T>((set) => ...)` shorthand (D8), because middleware stacks break inference on the inline form. The clearest case is `useActivityStore`, whose slice is typed `StateCreator<ActivityState, [['zustand/immer', never]]>` — the mutator tuple tells TypeScript that `set()` receives an Immer draft, so `state.routeCoordinates.push()` type-checks. On `interface` vs `type`: the stores use `type` aliases (`type AuthState = { ... }`) because the state shapes are closed unions and intersections (e.g. `status: 'idle' | 'active' | 'paused'`) that `type` expresses naturally, whereas `interface` shines for declaration-merged, extendable contracts — not the case here.
+
+- Event Loop: the persisted session is written asynchronously to the device Keychain/Keystore via `expo-secure-store`, so persistence never blocks the JS thread.
+
+  > Note: VICI deliberately does **not** use Zustand's `persist` middleware or AsyncStorage for the session (D4). Persistence is handled by the Supabase client's custom `secureStoreAdapter`, whose `getItem`/`setItem`/`removeItem` wrap `SecureStore.*Async` — Promise-returning APIs that run the actual Keychain/Keystore I/O on a native thread. On the event loop, the write is scheduled as a microtask/native callback: `set()` updates the in-memory store synchronously and returns immediately, while the encrypted disk write resolves later without blocking the JS thread or the GPS/render work running on it. This is exactly why an async storage adapter matters for a real-time app — a synchronous Keychain write on every auth change would stall the same thread that processes location ticks.
 
 #### [1.5] Task: Set up CI/CD with GitHub Actions
 
 - **Priority:** P1 - High
 - **Label:** DevOps
-- **Status:** Not started
+- **Status:** Design complete — ready for execution
 
 #### Steps
 
-- [ ] Create `.github/workflows/ci.yml` with jobs for `lint`, `typecheck`, and `test`
-- [ ] Configure Expo EAS for cloud builds
-- [ ] Create a deploy workflow to TestFlight / Play Console on merge to `main`
-- [ ] Configure GitHub secrets for `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `MAPBOX_TOKEN`
+- [ ] Create `.github/workflows/ci.yml` with jobs for `lint` and `typecheck` (the `test` job is deferred to [Epic 08](../08-testing-qa.md) — no test runner exists yet)
+- [ ] Configure Expo EAS for cloud builds (`eas.json` with `development` / `preview` / `production` profiles)
+- [ ] Build `preview` artifacts: Android `.apk` + iOS simulator `.app` (free, no Apple account)
+- [ ] Create `.github/workflows/build.yml` triggered manually (`workflow_dispatch`); auto-on-`main` trigger pre-written but disabled until the app is release-worthy
+- [ ] Configure `EXPO_TOKEN` as a GitHub Actions secret; put `EXPO_PUBLIC_SUPABASE_URL` / `EXPO_PUBLIC_SUPABASE_ANON_KEY` / `EXPO_PUBLIC_MAPBOX_TOKEN` in EAS environment variables (not GitHub)
+
+#### Deferred to Later Tasks
+
+- `test` job in CI — needs a test runner first; deferred to [Epic 08 · Testing & QA](../08-testing-qa.md)
+- Deploy to TestFlight / Play Console (`eas submit`) + iOS signing + paid Apple Developer account — deferred to [Epic 07 · Deploy & Observability](../07-deploy-observability.md)
+- Graduating `build.yml` to the `push: [main]` continuous-deployment trigger — Phase 2, when `main` is release-worthy
+
+#### Work Log
+
+- [Task design log 1.5](01-setup-architecture/1.5-setup-cicd-github-actions.md)
 
 #### Senior Learning 🎓
 
