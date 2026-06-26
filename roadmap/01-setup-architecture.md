@@ -15,9 +15,9 @@ Set up the VICI project architecture from scratch in a professional way, with th
 #### Definition of Done
 
 - [x] GitHub repo with a defined branch strategy (trunk-based: all branches → `main` via PR)
-- [ ] App runs in iOS Simulator and Android Emulator
-- [ ] TypeScript in strict mode with no errors
-- [ ] Basic CI pipeline running on every PR
+- [ ] App runs in iOS Simulator and Android Emulator (builds + launches; runtime crash on Intel simulator tracked separately)
+- [x] TypeScript in strict mode with no errors (all 3 packages pass `pnpm typecheck`)
+- [x] Basic CI pipeline running on every PR (`ci.yml`: lint + typecheck, green on PR #3)
 
 #### [1.1] Task: Initialize Expo project with strict TypeScript
 
@@ -202,15 +202,18 @@ Week 1 - TypeScript: Properly typing Zustand stores requires a solid grasp of `i
 
 - **Priority:** P1 - High
 - **Label:** DevOps
-- **Status:** Design complete — ready for execution
+- **Status:** Completed (one manual step pending — see note)
+
+> ⚠️ One manual step remains before `build.yml` can run: generate an `EXPO_TOKEN` on the Expo dashboard and add it as a GitHub Actions secret. The workflow is written and committed; it just needs the secret. Everything else is done and verified.
 
 #### Steps
 
-- [ ] Create `.github/workflows/ci.yml` with jobs for `lint` and `typecheck` (the `test` job is deferred to [Epic 08](../08-testing-qa.md) — no test runner exists yet)
-- [ ] Configure Expo EAS for cloud builds (`eas.json` with `development` / `preview` / `production` profiles)
-- [ ] Build `preview` artifacts: Android `.apk` + iOS simulator `.app` (free, no Apple account)
-- [ ] Create `.github/workflows/build.yml` triggered manually (`workflow_dispatch`); auto-on-`main` trigger pre-written but disabled until the app is release-worthy
-- [ ] Configure `EXPO_TOKEN` as a GitHub Actions secret; put `EXPO_PUBLIC_SUPABASE_URL` / `EXPO_PUBLIC_SUPABASE_ANON_KEY` / `EXPO_PUBLIC_MAPBOX_TOKEN` in EAS environment variables (not GitHub)
+- [x] Create `.github/workflows/ci.yml` with jobs for `lint` and `typecheck` (the `test` job is deferred to [Epic 08](../08-testing-qa.md) — no test runner exists yet) — green on PR #3
+- [x] Configure Expo EAS for cloud builds (`eas.json` with `development` / `preview` / `production` profiles)
+- [x] Build `preview` artifacts: Android `.apk` + iOS simulator `.app` (free, no Apple account) — both built; iOS launched in simulator (runtime crash on Intel sim tracked as deferred app bug)
+- [x] Create `.github/workflows/build.yml` triggered manually (`workflow_dispatch`); auto-on-`main` trigger pre-written but disabled until the app is release-worthy
+- [x] Put `EXPO_PUBLIC_SUPABASE_URL` / `EXPO_PUBLIC_SUPABASE_ANON_KEY` / `EXPO_PUBLIC_MAPBOX_TOKEN` in EAS environment variables (`preview`, not GitHub) — service-role key confirmed absent client-side
+- [ ] Configure `EXPO_TOKEN` as a GitHub Actions secret (manual dashboard step — see note above)
 
 #### Deferred to Later Tasks
 
